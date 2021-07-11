@@ -26,14 +26,13 @@ namespace BigSchoolFull.Models
         [Required]
         [StringLength(255)]
         public string Place { get; set; }
-
+        [Required]
         public DateTime DateTime { get; set; }
 
         public int CategoryId { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Attendance> Attendances { get; set; }
-
+        public virtual ICollection<Attendance> Attendances { get; set; }  
         public virtual Category Category { get; set; }
         public string LecturerName;
         public List<Category> ListCategory = new List<Category>();
