@@ -8,21 +8,31 @@ namespace BigSchoolFull.Controllers
 {
     public class AttendancesController : ApiController
     {
-        [System.Web.Http.HttpPost]
+        BigSchoolContext con = new BigSchoolContext();
+        [System.Web.Mvc.HttpPost]
         public IHttpActionResult Attend(Course attendanceDto)
         {
             var userID = User.Identity.GetUserId();
-            BigSchoolContext con = new BigSchoolContext();
-            if (con.Attendances.Any(p => p.Attendee == userID && p.CourseId == attendanceDto.Id))
+
+            if (con.Attendances.Any(p => p.Attendee == userID && p.CourseId ==
+            attendanceDto.Id))
             {
-                return BadRequest("The attendance already exists!");
+                con.Attendances.Remove(con.Attendances.SingleOrDefault(p =>
+                p.Attendee == userID && p.CourseId == attendanceDto.Id));
+                con.SaveChanges();
+                return Ok("cancel");
             }
-            var attendance = new Attendance() { CourseId = attendanceDto.Id, Attendee = User.Identity.GetUserId() };
+            var attendance = new Attendance()
+            {
+                CourseId = attendanceDto.Id,
+                Attendee =
+                User.Identity.GetUserId()
+            };
             con.Attendances.Add(attendance);
             con.SaveChanges();
             return Ok();
         }
 
-        
+
     }
 }
